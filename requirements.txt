@@ -1,0 +1,7 @@
+REQUIREMENTS
+
+
+fastapi
+uvicorn
+google-genai
+pydantic
