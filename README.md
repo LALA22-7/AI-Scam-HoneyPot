@@ -13,6 +13,7 @@ The agent adopts the persona of **"Ranjeet Sehgal"**, a 65-year-old retired Rail
 * **Dialect Engineering:** Uses "Hinglish" and regional grammar (East UP style) to sound authentic.
 * **Stealth Intelligence Extraction:** A background "Spy" script uses **Regex** to capture UPI IDs, phone numbers, and links from the scammer's messages automatically.
 * **JSON Output:** Returns structured data for every interaction, flagging scams and listing captured details.
+🚀 Update: Now features a Web UI! Run python -m streamlit run app.py to launch.
 
 ## 🛠️ Tech Stack
 * **Brain:** Google Gemini 2.5 Flash (Generative AI)

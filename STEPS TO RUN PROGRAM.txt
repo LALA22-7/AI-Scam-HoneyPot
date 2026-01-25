@@ -1,0 +1,40 @@
+Part 1: Run on Local Server (For You)
+This runs the code on your own laptop. Only you can see this.
+
+Open Terminal 1 (The Server)
+
+Navigate to your folder:
+
+PowerShell
+D:
+cd HACKATHON
+Start the API server:
+
+PowerShell
+python -m uvicorn main:app --reload
+Wait until you see: Uvicorn running on http://127.0.0.1:8000
+
+Open Swagger UI
+
+Go to your browser (Chrome/Edge).
+
+Type: http://127.0.0.1:8000/docs
+
+You should see the green POST /chat button.
+
+Part 2: Host Publicly (For Friends)
+This creates a tunnel so your friends can access your laptop's server from their phones.
+
+Open Terminal 2 (The Tunnel)
+
+Leave Terminal 1 running! Open a new terminal window.
+
+Run ngrok:
+
+PowerShell
+ngrok http 8000
+Copy the Magic Link
+
+Look for the line saying Forwarding.
+
+Copy the link that looks like: https://abcd-1234.ngrok-free.app
