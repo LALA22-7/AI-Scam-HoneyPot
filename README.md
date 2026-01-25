@@ -44,20 +44,23 @@ cd AI-Scam-HoneyPot
 
 3.  **Setup Security Crucial!**
     * Create a file named .env in the root folder and add your Google Gemini API Key. (Do not hardcode keys in the main script!)
-    * GEMINI_API_KEY=your_actual_api_key_here
+    ```bash
+    GEMINI_API_KEY="your_actual_api_key_here"
+    ```
+## ❓Choose Your Run Mode
 
-##   ❓Choose Your Run Mode
 A.  **Run the API Server Backend**
     ```bash
     python -m uvicorn main:app --reload
     ```
     * Open your browser to: `http://127.0.0.1:8000/docs`
-    * Send a POST request to `/chat` with a scam message. 
+    * Send a POST request to `/chat` with a scam message.
+
 B.  **Run the Web App Frontend**
     ```bash
     python -m streamlit run app.py
-     ```
-     *👉 Access at: `http://localhost:8501`
+    ```
+    *Access at: `http://localhost:8501`
 
 ## 📸 Example Output
 **Input:** "Send 500rs registration fee to 9876543210"
