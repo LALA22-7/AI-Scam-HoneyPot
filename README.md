@@ -3,6 +3,7 @@
 > **Submitted for: India AI Impact Hackathon 2026**
 > **Created by: Lala**
 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://ai-scam-honeypot.streamlit.app)
 ![Project Status](https://img.shields.io/badge/Status-Active-green)
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![Stack](https://img.shields.io/badge/FullStack-Streamlit%20%2B%20FastAPI-orange)
