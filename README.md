@@ -33,10 +33,10 @@ The agent adopts the persona of **Ranjeet Sehgal**, a 65-year-old retired Railwa
 ## ⚙️ How to Run Locally
 
 1.  **Clone the repository:**
-```bash
-git clone [https://github.com/YOUR_USERNAME/AI-Scam-HoneyPot.git](https://github.com/YOUR_USERNAME/AI-Scam-HoneyPot.git)
-cd AI-Scam-HoneyPot
-```
+    ```bash
+    git clone [https://github.com/YOUR_USERNAME/AI-Scam-HoneyPot.git](https://github.com/YOUR_USERNAME/AI-Scam-HoneyPot.git)
+    cd AI-Scam-HoneyPot
+    ```
 2.  **Install Dependencies:**
     ```bash
     pip install -r requirements.txt
@@ -50,17 +50,21 @@ cd AI-Scam-HoneyPot
 ## ❓Choose Your Run Mode
 
 A.  **Run the API Server Backend**
+
     ```bash
     python -m uvicorn main:app --reload
     ```
+
     * Open your browser to: `http://127.0.0.1:8000/docs`
     * Send a POST request to `/chat` with a scam message.
 
 B.  **Run the Web App Frontend**
+
     ```bash
     python -m streamlit run app.py
     ```
-    *Access at: `http://localhost:8501`
+    
+    * Access at: `http://localhost:8501`
 
 ## 📸 Example Output
 **Input:** "Send 500rs registration fee to 9876543210"
