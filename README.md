@@ -36,7 +36,7 @@ The agent adopts the persona of **Ranjeet Sehgal**, a 65-year-old retired Railwa
 ```bash
 git clone [https://github.com/YOUR_USERNAME/AI-Scam-HoneyPot.git](https://github.com/YOUR_USERNAME/AI-Scam-HoneyPot.git)
 cd AI-Scam-HoneyPot
-
+```
 2.  **Install Dependencies:**
     ```bash
     pip install -r requirements.txt
@@ -46,7 +46,7 @@ cd AI-Scam-HoneyPot
     * Create a file named .env in the root folder and add your Google Gemini API Key. (Do not hardcode keys in the main script!)
     * GEMINI_API_KEY=your_actual_api_key_here
 
-4.  **Choose Your Run Mode**
+##   ❓Choose Your Run Mode
 A.  **Run the API Server Backend**
     ```bash
     python -m uvicorn main:app --reload
