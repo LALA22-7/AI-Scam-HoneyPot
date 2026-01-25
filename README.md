@@ -81,8 +81,8 @@ B.  **Run the Web App Frontend**
 
 | Web Interface (Streamlit) | API Docs (Swagger UI) |
 |:---:|:---:|
-| ![<img width="2871" height="1609" alt="Screenshot 2026-01-25 143512" src="https://github.com/user-attachments/assets/17b40d52-f575-41a4-8155-02548181ab65" />
-) | ![<img width="2856" height="1673" alt="Screenshot 2026-01-25 162402" src="https://github.com/user-attachments/assets/ce39af20-38a5-4002-bb5f-8fc2e10fe487" />
-) |
+| <img width="2871" height="1609" alt="Screenshot 2026-01-25 143512" src="https://github.com/user-attachments/assets/17b40d52-f575-41a4-8155-02548181ab65" />
+ | <img width="2856" height="1673" alt="Screenshot 2026-01-25 162402" src="https://github.com/user-attachments/assets/ce39af20-38a5-4002-bb5f-8fc2e10fe487" />
+ |
 ---
 *Built with ❤️ by Lala for a Safer Digital India.*
