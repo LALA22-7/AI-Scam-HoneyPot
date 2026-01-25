@@ -1,8 +1,6 @@
-REQUIREMENTS
-
 streamlit
 fastapi
-google-genai
+google-generativeai
 python-dotenv
 pydantic
 uvicorn
