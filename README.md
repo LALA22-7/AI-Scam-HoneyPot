@@ -50,20 +50,16 @@ The agent adopts the persona of **Ranjeet Sehgal**, a 65-year-old retired Railwa
 ## ❓Choose Your Run Mode
 
 A.  **Run the API Server Backend**
-
-    ```bash
+```bash
     python -m uvicorn main:app --reload
-    ```
-
+```
     * Open your browser to: `http://127.0.0.1:8000/docs`
     * Send a POST request to `/chat` with a scam message.
 
 B.  **Run the Web App Frontend**
-
-    ```bash
+```bash
     python -m streamlit run app.py
-    ```
-    
+```
     * Access at: `http://localhost:8501`
 
 ## 📸 Example Output
