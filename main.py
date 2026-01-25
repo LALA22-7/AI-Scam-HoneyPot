@@ -1,26 +1,24 @@
 import os
-import re  # <--- THIS WAS MISSING
+import re
 import asyncio
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from pydantic import BaseModel
-from google import genai
-from google.genai import types
+import google.generativeai as genai
 
-# 1. LOAD SECRETS
+# 1. LOAD SECRETS & SETUP
 load_dotenv()
-api_key = os.getenv("GEMINI_API_KEY")
-
-# 2. SETUP APP & CLIENT
 app = FastAPI()
-client = genai.Client(api_key=api_key)
 
-# 3. DEFINE DATA MODELS
+api_key = os.getenv("GEMINI_API_KEY")
+genai.configure(api_key=api_key)
+
+# 2. DEFINE DATA MODELS
 class ScammerInput(BaseModel):
     message: str
     conversation_id: str = "default"
 
-# 4. THE BRAIN: RANJEET SEHGAL (Instruction)
+# 3. THE BRAIN: RANJEET SEHGAL (Instruction)
 ranjeet_instruction = """
 You are Ranjeet Sehgal, a 65-year-old retired Indian Railways employee living in Gorakhpur, Uttar Pradesh.
 You are chatting with a stranger on WhatsApp who you suspect is a scammer.
@@ -34,6 +32,13 @@ You are chatting with a stranger on WhatsApp who you suspect is a scammer.
 - **Rules:** Never admit you know it is a scam.
 """
 
+# 4. INITIALIZE MODEL (UPDATED TO 2.5 FLASH) ⚡️
+# We pass the instruction HERE in the stable SDK
+model = genai.GenerativeModel(
+    model_name="gemini-2.5-flash",  # <--- UPDATED HERE
+    system_instruction=ranjeet_instruction
+)
+
 # 5. SPY LOGIC (The Intelligence Extractor)
 def extract_intel(text):
     intel = {"upi_ids": [], "phone_numbers": [], "links": []}
@@ -46,7 +51,7 @@ def extract_intel(text):
     return intel
 
 # ---------------------------------------------------------
-# 6. THE SHARED BRAIN FUNCTION (Streamlit + API)
+# 6. THE SHARED BRAIN FUNCTION
 # ---------------------------------------------------------
 async def chat(user_message: str):
     # A. Run the Spy Logic
@@ -54,15 +59,10 @@ async def chat(user_message: str):
     
     # B. Generate Ranjeet's Reply
     try:
-        # We run this in a thread to keep the website fast
+        # We use 'model.generate_content', NOT 'client.models...'
         response = await asyncio.to_thread(
-            client.models.generate_content,
-            model="models/gemini-2.5-flash",
-            contents=user_message,
-            config=types.GenerateContentConfig(
-                system_instruction=ranjeet_instruction,
-                temperature=1.0, 
-            )
+            model.generate_content,
+            user_message
         )
         bot_reply = response.text
     except Exception as e:
