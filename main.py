@@ -97,31 +97,39 @@ async def root():
 # ---------------------------------------------------------
 @app.post("/chat")
 async def chat_endpoint(request: Request, x_api_key: str = Header(None)):
-    # 1. SECURITY CHECK (The "Lock")
-    # If the tester sends a key, we check it. If not, we might let it slide for debugging,
-    # OR strictly block it. Let's strictly block it to be safe.
+    # 1. SECURITY CHECK
     if x_api_key != "scam-honey-pot-secret-2026":
-        print(f"🚨 SECURITY ALERT: Invalid Key received: {x_api_key}")
         raise HTTPException(status_code=401, detail="Invalid API Key")
 
-    # 2. DEBUGGING (The "Spy")
+    # 2. PARSE DATA
     try:
         data = await request.json()
-        print(f"🕵️‍♂️ DEBUG LOG - INCOMING DATA: {data}")  # <--- CHECK RENDER LOGS FOR THIS!
+        print(f"🕵️‍♂️ DEBUG LOG: {data}") 
     except:
-        return {"error": "Invalid JSON format"}
+        return {"error": "Invalid JSON"}
 
-    # 3. FLEXIBLE FIELD FINDER
-    # The tester might be sending 'message', 'content', 'text', or 'input'. We try them all.
-    user_message = data.get("message") or data.get("content") or data.get("text") or data.get("input")
+    # --- 3. FIX FOR NESTED JSON (The Fix!) ---
     
-    # Try to find the conversation ID too
-    chat_id = data.get("conversation_id") or data.get("session_id") or "default"
+    # A. Get the Message
+    # Check if 'message' is a dictionary (like the Tester sent) or a string
+    raw_message = data.get("message")
+    
+    if isinstance(raw_message, dict):
+        # IF it's a dictionary, dig inside to find the text
+        user_message = raw_message.get("text") 
+    else:
+        # IF it's a string, just use it
+        user_message = raw_message or data.get("content") or data.get("text")
+
+    # B. Get the Session ID
+    # The tester uses 'sessionId' (CamelCase), not 'conversation_id'
+    chat_id = data.get("sessionId") or data.get("conversation_id") or "default"
 
     if not user_message:
-        print("❌ ERROR: No message field found in data!")
-        return {"error": "Message field missing", "received_data": data}
+        return {"error": "Message text missing"}
 
     # 4. PASS TO RANJEET
-    response = await chat(user_message, chat_id)
+    # We force them to be strings to prevent crashes
+    response = await chat(str(user_message), str(chat_id))
+    
     return response
