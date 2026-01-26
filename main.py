@@ -50,15 +50,50 @@ model = genai.GenerativeModel(model_name="gemini-2.5-flash", system_instruction=
 chat_sessions = {}
 
 # 2. BACKUP REPLIES (Lifesaver)
+# --- 3. SMART BACKUP REPLIES (The "Infinite Excuse" Engine) ---
+# Used when Google Gemini is rate-limited (429)
 BACKUP_REPLIES = [
-    "Arre beta, thoda dheere bolo, hum likh rahe hain... pen ki syahi khatam ho gayi thi.",
-    "Haan haan, sunayi de raha hai. Tumhara awaz kat raha hai thoda. Wapas bolo number?",
-    "Ek min ruko... chashma nahi mil raha. Tum line pe raho beta.",
-    "Achha, SBI wala account? Ya Canara wala? Hum bhool gaye kisme paisa hai.",
-    "Beta tumhara phone number kya tha? Hum save kar lete hain pehle.",
-    "Arre net slow chal raha hai humara... ghum raha hai gola... ruko...",
+    # --- Category: Tech Confusion ---
+    "Arre beta, ye 'submit' button kidhar hai? Haryali wala ya laal wala?",
+    "Ruko beta, humara screen kala ho gaya... shayad battery hil gayi.",
+    "Ye OTP toh 4 number ka hai, par dabba 6 number ka kyu hai?",
+    "Tumhara awaz kat raha hai... 'Hello? Hello?'... tower nahi aa raha shayad.",
+    "Humne abhi button dabaya, par ye bol raha hai 'Server Unreachable'. Ye sarwar kaun hai?",
+    "Arre ye gola ghum raha hai screen pe... chakkar aa raha hai dekh ke.",
+    "Beta, ye 'AnyDesk' kya lakdi ka hota hai? Humare paas toh plastic ki kursi hai.",
+    
+    # --- Category: Physical Distractions (Glasses/Hearing) ---
+    "Ek min ruko... chashma nahi mil raha. Dhundhla dikh raha hai sab.",
+    "Arre beta, thoda zor se bolo, humara kaan ka machine battery low hai.",
+    "Ruko, humara hath kaanp raha hai, sahi se type nahi ho raha.",
+    "Beta, hum chai pee rahe the, phone pe gir gayi... pochna padega.",
+    "Humari bahu aa gayi hai kamre mein, thoda dheere bolo warna daantegi.",
+    
+    # --- Category: The "Pintu" (Nephew) Excuse ---
+    "Humara bhatija Pintu aane wala hai school se, wo hi ye sab mobile chalata hai.",
+    "Beta, Pintu ko bula lein kya? Usko computer ka course kiya hai usne.",
+    "Tum Pintu ke dost ho kya? Wo bhi aise hi paise mangta rehta hai.",
+    
+    # --- Category: Financial/Pension Worries ---
+    "Achha suno, ye humara Railways wala pension account hai na? Usme toh paise hain.",
+    "Humara Canara Bank wala passbook nahi mil raha... usme account number likha tha.",
+    "Beta, agar hum paise bhej denge toh humara gas cylinder ka subsidy aayega na?",
+    "Arre hum Gorakhpur station wale branch mein manager ko jaante hain, unse baat karwaayein?",
+    
+    # --- Category: Delay Tactics ---
+    "Hum likh rahe hain number... pen nahi mil raha... ruko pencil dhoondhne do.",
+    "Haan haan, sunayi de raha hai... bas ek minute hold karo, darwaze pe koi hai.",
+    "Arre beta, ye message copy kaise karte hain? Ungli daba ke rakhein kya?",
+    "Tum line pe raho, hum padosi ke ladke ko bulate hain, wo madad karega.",
+    "Hum abhi ATM ja rahe hain check karne... tum line pe rahoge?",
+    
+    # --- Category: Pure Nonsense (Dialect) ---
+    "Ee sasura net nahi chal raha humara... Modi ji ko shikayat karni padegi.",
+    "Kaun bol rahe ho? Mishra ji ke ladke ho kya?",
+    "Arre beta, hum budhe aadmi hain, humko itna tension mat do.",
+    "Haan likho number... 9... 8... arre bhool gaye aage kya tha.",
+    "Beta tumhara naam kya bataya tha? 'Ramesh' ya 'Suresh'?",
 ]
-
 # 3. SPY LOGIC (Now with Debug Printing)
 def extract_intel(text):
     intel = {
