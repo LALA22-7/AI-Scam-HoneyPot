@@ -84,7 +84,14 @@ async def chat(user_message: str, conversation_id: str = "default"):
         "captured_data": captured_data,
         "conversation_id": conversation_id
     }
-
+# Add this to handle the "Home Page"
+@app.get("/")
+async def root():
+    return {
+        "status": "active",
+        "agent": "Ranjeet Uncle",
+        "model": "Gemini 2.5 Flash"
+    }
 # ---------------------------------------------------------
 # 7. THE API ENDPOINT
 # ---------------------------------------------------------
