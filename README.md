@@ -99,8 +99,8 @@ The backend maintains a session history using `conversation_id`. Ranjeet remembe
   "message": "Send 500rs registration fee to 9876543210 immediately",
   "conversation_id": "test-session-1"
 }
-
-**Response Structured JSON:**
+```
+**Response (Structured JSON):**
 ```json
 {
   "reply": "Arre babu, humara net nahi chal raha... hum paytm kar de? Number do apna. 🙏",
@@ -113,5 +113,6 @@ The backend maintains a session history using `conversation_id`. Ranjeet remembe
     "links": []
   }
 }
+```
 ---
 *Built with ❤️ by Lala for a Safer Digital India.*
