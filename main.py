@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from pydantic import BaseModel
 import google.generativeai as genai
-
+from fastapi import Request, Header, HTTPException # <--- Make sure these are imported at the top!
 # 1. LOAD SECRETS & SETUP
 load_dotenv()
 app = FastAPI()
@@ -96,7 +96,32 @@ async def root():
 # 7. THE API ENDPOINT
 # ---------------------------------------------------------
 @app.post("/chat")
-async def chat_endpoint(data: ScammerInput):
-    # We pass the conversation_id so Ranjeet remembers context!
-    response = await chat(data.message, data.conversation_id)
+async def chat_endpoint(request: Request, x_api_key: str = Header(None)):
+    # 1. SECURITY CHECK (The "Lock")
+    # If the tester sends a key, we check it. If not, we might let it slide for debugging,
+    # OR strictly block it. Let's strictly block it to be safe.
+    if x_api_key != "scam-honey-pot-secret-2026":
+        print(f"🚨 SECURITY ALERT: Invalid Key received: {x_api_key}")
+        raise HTTPException(status_code=401, detail="Invalid API Key")
+
+    # 2. DEBUGGING (The "Spy")
+    try:
+        data = await request.json()
+        print(f"🕵️‍♂️ DEBUG LOG - INCOMING DATA: {data}")  # <--- CHECK RENDER LOGS FOR THIS!
+    except:
+        return {"error": "Invalid JSON format"}
+
+    # 3. FLEXIBLE FIELD FINDER
+    # The tester might be sending 'message', 'content', 'text', or 'input'. We try them all.
+    user_message = data.get("message") or data.get("content") or data.get("text") or data.get("input")
+    
+    # Try to find the conversation ID too
+    chat_id = data.get("conversation_id") or data.get("session_id") or "default"
+
+    if not user_message:
+        print("❌ ERROR: No message field found in data!")
+        return {"error": "Message field missing", "received_data": data}
+
+    # 4. PASS TO RANJEET
+    response = await chat(user_message, chat_id)
     return response
