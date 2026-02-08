@@ -1,77 +1,68 @@
 import streamlit as st
 import asyncio
-from main import chat  # <--- Imports the 2.5 Flash Brain from main.py
+import uuid
+from main import chat  # Importing your Ranjeet logic
 
-# Page Config
-st.set_page_config(page_title="Ranjeet Uncle", page_icon="👴", layout="centered")
+# --- PAGE CONFIG ---
+st.set_page_config(
+    page_title="Ranjeet Uncle - Scam Detector",
+    page_icon="👴",
+    layout="centered"
+)
 
-# Custom CSS
-st.markdown("""
-<style>
-    .stTextInput > div > div > input { background-color: #f0f2f6; }
-    .chat-message { padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 1rem; display: flex }
-    .chat-message.user { background-color: #2b313e }
-    .chat-message.bot { background-color: #475063 }
-</style>
-""", unsafe_allow_html=True)
+# --- 1. SESSION ID MANAGEMENT ---
+# We need a unique ID for the callback to work
+if "session_id" not in st.session_state:
+    st.session_state["session_id"] = str(uuid.uuid4())
 
-st.title("👴 Ranjeet Uncle vs Scammers")
-st.caption("He is old. He is slow. And he wastes scammers' time.")
+# --- 2. MOCK BACKGROUND TASKS ---
+# Streamlit doesn't have FastAPI's BackgroundTasks, so we make a fake one
+class MockBackgroundTasks:
+    def add_task(self, func, *args, **kwargs):
+        # Just run the async function immediately in the background
+        try:
+            loop = asyncio.get_event_loop()
+            loop.create_task(func(*args, **kwargs))
+        except Exception as e:
+            print(f"Background task failed: {e}")
 
-# --- INITIALIZATION ---
+# --- HEADER ---
+st.title("👴 Ranjeet Uncle")
+st.caption("The AI that wastes scammers' time so you don't have to.")
+
+# --- CHAT HISTORY ---
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Initialize a place to store the LATEST scam intel so it doesn't disappear
-if "latest_intel" not in st.session_state:
-    st.session_state.latest_intel = None
-
-# --- DISPLAY CHAT HISTORY ---
+# Display previous messages
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# --- HANDLE NEW INPUT ---
-if prompt := st.chat_input("Type a scam message..."):
+# --- CHAT INPUT ---
+if prompt := st.chat_input("Say something (e.g., 'You won a lottery!')"):
     # 1. Show User Message
-    st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
+    st.session_state.messages.append({"role": "user", "content": prompt})
 
-    # 2. Get Bot Reply
-    with st.spinner("Ranjeet Uncle is finding his glasses..."):
-        try:
-            # Call the AI
-            response_data = asyncio.run(chat(prompt))
-            bot_reply = response_data["reply"]
-            
-            # SAVE the intel to Session State (So the sidebar can see it later!)
-            st.session_state.latest_intel = response_data
-            
-        except Exception as e:
-            bot_reply = f"Arre beta... net issue hai... (Error: {str(e)})"
-            st.session_state.latest_intel = None
-    
-    # 3. Show Bot Reply
-    st.session_state.messages.append({"role": "assistant", "content": bot_reply})
+    # 2. Get Ranjeet's Reply
     with st.chat_message("assistant"):
-        st.markdown(bot_reply)
+        message_placeholder = st.empty()
+        
+        # --- THE FIX IS HERE ---
+        # We pass the session_id and the mock_tasks object
+        mock_tasks = MockBackgroundTasks()
+        
+        # Run async chat function
+        full_response = asyncio.run(chat(prompt, st.session_state["session_id"], mock_tasks))
+        
+        message_placeholder.markdown(full_response)
+    
+    st.session_state.messages.append({"role": "assistant", "content": full_response})
 
-# --- SIDEBAR (SAFE MODE) ---
+# --- SIDEBAR (Optional) ---
 with st.sidebar:
-    st.header("⚙️ System Status")
-    st.success("⚡ Model: Gemini 2.5 Flash")
-    st.info("🟢 Agent Status: Online")
-    
-    st.divider()
-    
-    st.header("🕵️‍♂️ Intel Captured")
-    
-    # Check the SESSION STATE, not the local variable
-    data = st.session_state.latest_intel
-    
-    if data and data.get("scam_detected"):
-        st.error("🚨 SCAM DETECTED!")
-        st.json(data["captured_data"])
-    else:
-        st.info("No scam data in latest message.")
+    st.header("🕵️ Spy Dashboard")
+    st.write(f"Session ID: `{st.session_state['session_id']}`")
+    st.info("Ranjeet is active. Any extracted data (Bank accounts, UPI) is being sent to the Hackathon server in the background.")
