@@ -164,21 +164,29 @@ async def chat_endpoint(request: Request, x_api_key: str = Header(None)):
     if x_api_key != "scam-honey-pot-secret-2026":
         raise HTTPException(status_code=401, detail="Invalid API Key")
 
-    try:
-        data = await request.json()
-    except:
-        return {"error": "Invalid JSON"}
+    # 1. Read the raw body first
+    body = await request.body()
+    data = {}
+    
+    # 2. Only try to parse if the body isn't empty
+    if body:
+        try:
+            data = await request.json()
+        except:
+            return {"error": "Invalid JSON"}
 
     # Handle Nested JSON
     raw_message = data.get("message")
     if isinstance(raw_message, dict):
         user_message = raw_message.get("text")
     else:
+        # data.get() safely returns None if the key doesn't exist
         user_message = raw_message or data.get("content") or data.get("text")
         
     chat_id = data.get("sessionId") or data.get("conversation_id") or "default"
 
-    if not user_message: user_message = "Hello?"
+    if not user_message: 
+        user_message = "Hello?"
 
     response = await chat(str(user_message), str(chat_id))
     return response
