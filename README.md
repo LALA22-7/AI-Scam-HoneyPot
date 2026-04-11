@@ -1,7 +1,7 @@
 # 🕵️‍♂️ Agentic AI Scam Honey-Pot ("Ranjeet Uncle")
 
-> **🏆 Submission for: India AI Impact Hackathon 2026**
-> **👨‍💻 Created by: Lala**
+> **🏆 Submission for: TECHNOVERSE of AKGEC**
+> **👨‍💻 Created by: TEAM TITANS**
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://ai-scam-honeypot.streamlit.app)
 ![Deployment](https://img.shields.io/badge/Backend-Deployed%20on%20Render-green)
@@ -115,4 +115,4 @@ The backend maintains a session history using `conversation_id`. Ranjeet remembe
 }
 ```
 ---
-*Built with ❤️ by Lala for a Safer Digital India.*
+*Built with ❤️ for a Safer Digital India.*
